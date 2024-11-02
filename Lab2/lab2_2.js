@@ -1,3 +1,5 @@
+/* Create a function that when clicking on a button on the page will be displayed an image, which is randomly selected from the given images. */
+
 function openImage(){
     const images = [
         "http://data.whicdn.com/images/15145864/large.jpg",
