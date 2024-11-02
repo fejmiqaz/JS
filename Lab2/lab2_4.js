@@ -1,3 +1,5 @@
+/* Write Javascript code where two numbers are entered through text fields. The page will also contain the Add button, which will collect both numbers and as a result will write the result into the page. */
+
 function addNumbers(){
     let firstNum = parseInt(document.getElementById("firstNum").value);
     let secondNum = parseInt(document.getElementById("secondNum").value);
