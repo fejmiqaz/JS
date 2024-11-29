@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- UNFINISHED PROJECT!!! -->
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+
+        div{
+            display: flex;
+            justify-content: left;
+            align-items: center;
+        }
+        div div {
+            display: grid;
+            justify-content: left;
+            align-items: center;
+            width: 300px;
+        }
+        div div div {
+            display: flex;
+            justify-content: left;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        div div div div {
+            display: flex;
+            justify-content: right;
+            align-items: center;
+        }
+        div div p {
+            border: 1px solid black;
+            border-radius: 50%;
+            text-align: center;
+            margin-inline: 3px;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+    </style>
+</head>
+<body>
+<h1>National Lottery Game</h1>
+
+<div>
+    <div>
+        <h1>Assign form</h1>
+        <div>
+            <label for="name">Name and surname</label>
+            <div>
+                <input type="text" id="name">
+            </div>
+        </div>
+        <div>
+            <label for="amount">Amount</label>
+            <div>
+                <input type="text" id="amount">
+            </div>
+        </div>
+        <div>
+            <label for="code">Code</label>
+            <div>
+                <input type="text" id="code">
+            </div>
+        </div>
+        <div>
+            <label for="combination">Combination</label>
+            <div>
+                <input type="text" id="combination">
+            </div>
+        </div>
+
+        <div>
+            <label for="bonus">Bonuse</label>
+            <div>
+                <select id="bonus"><option>yes</option><option>no</option></select>
+            </div>
+        </div>
+        <button onclick="add()">Add</button>
+
+    </div>
+    <div style="margin-left: 15px">
+        <h1>Lucky numbers</h1>
+        <div style="display: flex; justify-content: left; align-items: center">
+            <p class="combination_nums">0</p>
+            <p class="combination_nums">0</p>
+            <p class="combination_nums">0</p>
+            <p class="combination_nums">0</p>
+            <p class="combination_nums">0</p>
+            <p class="combination_nums">0</p>
+            <p class="combination_nums">0</p>
+        </div>
+        <button onclick="random_combinations()">Get weekly combination</button>
+        <h3>Total win: <span id="total_win">0</span></h3>
+    </div>
+</div>
+
+<div id="container">
+
+</div>
+
+<script>
+    let sameName = new Set();
+    function random_combinations(){
+        let random = document.getElementsByClassName('combination_nums');
+        for(let i = 0; i < random.length; i++){
+            random[i].innerHTML = Math.floor(Math.random()*25);
+        }
+    }
+
+    function add() {
+        var name = document.getElementById('name');
+        name = name.value;
+        var amount = document.getElementById('amount');
+        amount = amount.value;
+        var code = document.getElementById('code');
+        code = code.value;
+        var combination = document.getElementById('combination');
+        combination = combination.value;
+        var bonus = document.getElementById('bonus');
+        bonus = bonus.value;
+
+        if (name.length == 0 || amount.length == 0 || code.length == 0 || combination.length == 0 || bonus.length == 0) {
+            alert("Enter info properly!");
+            return;
+        }
+
+        if(sameName.has(name)){
+            alert("Can't add");
+            return;
+        }
+        sameName.add(name);
+
+        random_combinations()
+
+        let container = document.getElementById('container');
+        let card = "<div style='margin-top: 5px; margin-inline: 3px;display: flex; justify-content: left; align-items: center; width: 300px; height:300px; background-color: lightgreen'>" +
+            "<div style='display: grid; justify-content: left; align-items: center'>" +
+            "<span>Name " + name + "</span>" +
+            "<span>Code " + code + "</span>" +
+            "<span style='display: flex; justify-content: center; align-items: center'>Combination: "+combination.split(' ').map(num => "<p>"+num+"</p>").join('') +
+            "</span>" +
+            "<span>Initial amount: " + amount + "</span>" +
+            "</div>" +
+            "</div>";
+        let total = document.getElementById('total_win');
+        total.innerHTML = parseInt(amount) * 138;
+        container.innerHTML += card;
+
+    }
+
+</script>
+
+</body>
+</html>

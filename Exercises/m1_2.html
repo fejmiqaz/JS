@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+    <style>
+        h1 {
+            text-align: center;
+        }
+
+        div {
+            justify-content: center;
+            align-items: center;
+            display: grid;
+            width: 400px;
+        }
+
+        div div {
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        div div div {
+            justify-content: right;
+            align-items: center;
+            display: flex;
+        }
+
+        div div div select {
+            width: 180px;
+            text-align: center;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+        th, td {
+            width: 100px;
+            text-align: center;
+        }
+        tr, th, td {
+            border: 1px solid black;
+        }
+
+    </style>
+</head>
+<body>
+<h1>Online classes</h1>
+
+<div>
+    <div>
+        <label for="name">Name and surname</label>
+        <div>
+            <input type="text" id="name">
+        </div>
+    </div>
+
+    <div>
+        <label for="email">Email</label>
+        <div>
+            <input type="text" id="email">
+        </div>
+    </div>
+
+    <div>
+        <label for="age">Age</label>
+        <div>
+            <input type="text" id="age">
+        </div>
+    </div>
+
+    <div>
+        <label for="username">Username</label>
+        <div>
+            <input type="text" id="username">
+        </div>
+    </div>
+
+    <div>
+        <label for="password">Password</label>
+        <div>
+            <input type="text" id="password">
+        </div>
+    </div>
+    <div>
+        <label for="role">Role</label>
+        <div>
+            <select id="role"><option>teacher</option><option>student</option></select>
+        </div>
+    </div>
+</div>
+
+<button onclick="doit()">Add</button>
+
+<p>Available teachers: <span id="available_teachers">0</span></p>
+
+<table id="schoolTable">
+    <tr><th>Name</th><th>Username</th><th>Email</th><th>Age</th><th>Role</th><th>Actions</th></tr>
+</table>
+
+
+<script>
+    let cnt = 0;
+    function update(){
+        var available = document.getElementById('available_teachers');
+        available.innerHTML = cnt;
+    }
+    function hire(obj){
+        var row = obj.parentNode.parentNode;
+        row.style.backgroundColor = 'lightgray';
+        row.removeChild(row.lastElementChild);
+        cnt--;
+        update();
+    }
+    function doit(){
+        var name = document.getElementById('name');
+        name = name.value;
+        var email = document.getElementById('email');
+        email = email.value;
+        var age = document.getElementById('age');
+        age = age.value;
+        var username = document.getElementById('username');
+        username = username.value;
+        var password = document.getElementById('password');
+        password = password.value;
+        var role = document.getElementById('role');
+        role = role.value;
+        if(name.length == 0 || email.length == 0 || username.length == 0 || age.length == 0 || password.length == 0 || role.length == 0){
+            alert("Please enter your data correctly!");
+            return;
+        }
+
+        if(password.length>=10){
+            let containsNum = false;
+            let hasCapital = false;
+            for(let char of password){
+                if(!isNaN(char) && char !== " "){ // check if it has a digit
+                    containsNum = true;
+                }
+                if(char>= 'A' && char <= 'Z'){ // check if it has a capital letter
+                    hasCapital = true;
+                }
+                if(hasCapital && containsNum){
+                    break;
+                }
+            }
+        }
+
+        if(age < 18){
+            alert("A teacher should be 18 or over :)")
+            role = 'student';
+        }
+        var table = document.getElementById('schoolTable');
+        var row = "";
+        if(role === 'student'){
+            row = "<tr style='background-color: lightblue'><td>"+name+"</td><td>"+username+"</td><td>"+email+"</td><td>"+age+"</td><td>"+role+"</td></tr>";
+        }else{
+            row = "<tr style='background-color: lightgreen'><td>"+name+"</td><td>"+username+"</td><td>"+email+"</td><td>"+age+"</td><td>"+role+"</td><td><button onclick='hire(this)'>Hire</button></td></tr>"
+            cnt++;
+        }
+        table.innerHTML += row;
+
+        update();
+
+    }
+
+
+</script>
+
+</body>
+</html>
