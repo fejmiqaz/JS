@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lab3 ex3</title>
+</head>
+<body>
+<script>
+    let a = prompt("Enter a sentence:" );
+    let res = "";
+    let seen = new Set();
+
+    for(let char of a){
+        if(/\d/.test(char)||char===' '){
+            continue;
+        }
+
+        if(!seen.has(char)){
+            res += char;
+            seen.add(char);
+        }
+    }
+    let res2 = res.split(" ");
+    alert(res2);
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script></script>
+</head>
+<body>
+
+<label> <input type="text" id="title"></label> <button onclick="getMovieData()">Hello</button>
+
+<div>
+    <h1 id="movieTitle"></h1>
+    <p id="plot"></p>
+    <h3 id="actors"></h3>
+    <img src="" alt="" id="poster">
+</div>
+
+<script>
+
+    function getMovieData(){
+        var title = document.getElementById("title");
+        title = title.value;
+        var url = "http://www.omdbapi.com/?apikey=1012ef22&t=" + title;
+        fetch(url)
+            .then(response => response.json())
+            .then( function (data) {
+                let MovieTitle = document.getElementById("movieTitle");
+                MovieTitle.innerHTML = data.Title;
+                let Actors = document.getElementById("actors");
+                Actors.innerHTML = data.Actors;
+                let Plot = document.getElementById("plot");
+                Plot.innerHTML = data.Plot;
+                let Poster = document.getElementById("poster");
+                Poster.src = data.Poster;
+            })
+    }
+
+</script>
+
+</body>
+</html>

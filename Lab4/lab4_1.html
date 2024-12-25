@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+</head>
+<body>
+
+<button onclick="generateRectangle()">Generate Rectangle</button>
+<button onclick="sizeUp()">Random 2</button>
+
+<div id="rectangle" style="background-color: red; width: 15px; height: 15px"></div>
+
+
+<script>
+
+    function getRandomPosition(max){
+        return Math.floor(Math.random() * max);
+    }
+    function generateRectangle() {
+        let rectangle = document.getElementById("rectangle");
+        anime({
+            targets: rectangle,
+            translateY: getRandomPosition(window.innerHeight),
+            translateX: getRandomPosition(window.innerWidth),
+            duration: 2000,
+            easing: 'easeOutExpo'
+        });
+    }
+
+    function sizeUp(){
+        let rectangle = document.getElementById("rectangle");
+
+        anime({
+           targets: rectangle,
+            translateX: getRandomPosition(window.innerWidth),
+            translateY: getRandomPosition(window.innerHeight),
+            width: `${getRandomPosition(200)+50}px`,
+            height: `${getRandomPosition(200)+50}px`,
+            easing: 'easeInOutQuad',
+            durations: 1000
+        });
+    }
+</script>
+
+</body>
+</html>

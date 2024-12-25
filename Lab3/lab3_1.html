@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lab3 ex1</title>
+</head>
+<body>
+<script type="text/javascript">
+    let a = prompt("Enter something:");
+    let b = prompt("Enter a number: ");
+    b = parseInt(b);
+    if(b>0){
+        let len = a.length;
+        b = b % len;
+        let shiftedRight = a.slice(-b) + a.slice(0,len - b);
+        alert(shiftedRight)
+    }else{
+        let len = a.length;
+        b = b%len;
+        let shiftedLeft = a.slice(b) + a.slice(0,n);
+        alert(shiftedLeft);
+    }
+</script>
+</body>
+</html>

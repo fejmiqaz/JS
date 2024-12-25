@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lab3 ex4</title>
+</head>
+<body>
+<script>
+    let input = "";
+    let teams = [];
+    let results = [];
+    while(input!=="@"){
+        input = prompt("Enter something (@ to stop): ");
+        if(input!=="@" && input.includes(":")){
+            let [teamName, code] = input.split(":");
+            code = parseInt(code);
+            teams.push({name: teamName, code:code, goals:0});
+        }
+    }
+    input = "";
+    while(input!=="@"){
+        input = prompt("Enter match result:");
+        if(input!=="@" && input.includes(";") && input.includes(":")){
+            let[matchCodes, goals] = input.split(";");
+            let [code1, code2] = matchCodes.split(":").map(Number);
+            let [teamGoals1, teamGoals2 ] = goals.split(":").map(Number);
+
+            let team1 = teams.find(team=> team.code === code1);
+            let team2 = teams.find(teams=> teams.code === code2);
+
+            if(team1 && team2){
+                team1.goals += teamGoals1;
+                team2.goals += teamGoals2;
+            }
+        }
+    }
+
+    let totalGoals = 0;
+    teams.forEach(team=>{
+        alert(team.code + team.name + team.goals);
+        totalGoals+= team.goals;
+    });
+
+    alert(totalGoals);
+
+</script>
+</body>
+</html>

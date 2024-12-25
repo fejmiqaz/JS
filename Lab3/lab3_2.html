@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+    let a = prompt("Enter");
+    let res = "";
+    for(let i = 0; i < a.length - 1; i++){
+        let currWord = a[i];
+        let nextWord = a[i+1];
+        if(currWord.slice(0,2) !== nextWord.slice(0,2)){
+            res += currWord+" ";
+        }
+    }
+    res += a[a.length-1];
+    alert(res.trim())
+</script>
+
+</body>
+</html>
