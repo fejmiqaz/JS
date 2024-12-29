@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+      div {
+        display: grid;
+        align-content: center;
+        justify-content: left;
+      }
+  </style>
+</head>
+<body>
+
+<div>
+  <label for="date">Date</label> <input type="text" id="date">
+  <label for="product">Products</label> <input type="text" id="product">
+  <label for="sales">Sales</label> <input type="text" id="sales">
+  <button onclick="generateChart()">Generate chart</button>
+</div>
+
+<div id="chart">
+
+</div>
+
+<script>
+  let allData = [];
+  let dates = [];
+  let products = [];
+  let sales2 = [];
+
+
+  function generateChart() {
+    let date = document.getElementById('date');
+    date = date.value;
+    dates.push(date);
+    let product = document.getElementById('product');
+    product = product.value;
+    products.push(product);
+    let sales = document.getElementById('sales');
+    sales = sales.value;
+    sales2.push(sales);
+
+    if(sales.length === 0 || date.length === 0 || product.length === 0){
+      alert("Please enter a valid input");
+    }
+
+
+
+    for(let i=0; i<date.length; i++){
+      allData.push({
+        date: dates[i],
+        product: products[i],
+        sales: sales2[i]
+      })
+    }
+
+    console.log(allData);
+    plotly(allData);
+
+  }
+
+  function plotly(allData){
+    let data = [{
+      x: allData.map(item => item.date),
+      y: allData.map(item => item.sales),
+      type: 'bar'
+    }]
+
+    let layout = {
+      yaxis: {title: "Products"},
+      xaxis: { title: "Date" },
+      title: "Sales",
+    }
+
+    Plotly.newPlot('chart', data, layout);
+  }
+
+</script>
+
+</body>
+</html>
