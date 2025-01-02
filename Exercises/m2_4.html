@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <style>
+
+    input {
+      border: 1px solid black;
+      height: 120px;
+      width: 500px;
+      font-size: 120px;
+      text-align: center;
+    }
+  </style>
+
+</head>
+<body>
+
+<label for="randomText">Enter a text</label> <input type="text" id="randomText">
+<button onclick="randomize()">TRY</button>
+
+<div id="inputs">
+</div>
+
+<script>
+  function randomize(){
+    let data1 = '["win", "crazy", "best", "modern", "classic"]';
+
+    let data = JSON.parse(data1);
+    let inputs = document.getElementById('inputs');
+    inputs.innerHTML = "";
+
+    let randomText = document.getElementById('randomText');
+    randomText = randomText.value;
+
+
+    let element = data[Math.floor(Math.random() * data.length)];
+
+    for(let i = 0; i < element.length; i++) {
+      let box = document.createElement('input');
+      console.log(element[i])
+      if(randomText[i].charCodeAt(0) === element[i].charCodeAt(0)){
+        box.style.backgroundColor = 'green';
+      }else if (randomText[i].charCodeAt(0) >= element[i].charCodeAt(0)){
+        box.style.backgroundColor = 'yellow';
+      }else{
+        box.style.backgroundColor = 'red';
+      }
+      box.value = randomText[i];
+      inputs.appendChild(box);
+    }
+  }
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        div {
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+
+<textarea name="input" id="input" cols="30" rows="10"></textarea>
+<button id="button" onclick="generate()">Generate</button>
+
+<div id="output">
+
+</div>
+
+<script>
+
+    function generate() {
+        let text = document.getElementById("input");
+        text = text.value;
+
+
+        let button = document.getElementById("button");
+        button.style.display = 'none';
+
+        let output = document.getElementById("output");
+        output.innerHTML = "";
+
+        let colors = ['red', 'blue', 'green', 'orange', 'purple', 'black'];
+
+        let result = text.split("\n");
+        result.forEach((element, index) => {
+            setTimeout(function () {
+                let el = '<p style="color:'+colors[Math.floor(Math.random()*colors.length-1)]+';font-size: '+Math.floor(Math.random() * 100) +'px; top: '+Math.floor(Math.random() * (window.innerHeight - 100)) +'px; left: '+Math.floor(Math.random() * (window.innerWidth-100)) +'px; right: '+Math.floor(Math.random * (window.innerWidth-100))+' px;bottom: ' + Math.floor(Math.random() * (window.innerHeight - 100)) + 'px;">'+element+'</p>'
+                output.innerHTML += el;
+            },index * 500)
+        })
+    }
+    
+</script>
+
+</body>
+</html>

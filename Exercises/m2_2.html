@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <style>
+    div {
+      display: flex;
+      justify-content: left;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+
+<button id="leftButton"><</button>
+<button id="rightButton">></button>
+
+<div id="div1" style="width:500px;height:500px;border:1px solid black">
+
+</div>
+
+<script>
+  const data = '[\n' +
+          '    {"background-color": "red", "width": "100px", "height": "100px"},\n' +
+          '    {"background-color": "green", "width": "50px", "height": "50px"},\n' +
+          '    {"background-color": "blue", "width": "100px", "height": "50px"}\n' +
+          '  ]'
+
+  function generate(){
+    let parsed = JSON.parse(data)
+    let div = document.getElementById("div1")
+
+    div.innerHTML = '';
+
+    let currIDX = 0;
+
+    div.innerHTML += '<div style="background-color: '+parsed[0]['background-color']+'; width: '+parsed[0]['width']+'; height: '+parsed[0]['height']+';"></div>'
+    document.getElementById('leftButton').addEventListener('click',function(){
+      currIDX = (currIDX - 1 + parsed.length) % parsed.length;
+      let square = '<div style="background-color: '+parsed[currIDX]['background-color']+'; width:'+parsed[currIDX]['width']+'; height: '+parsed[currIDX]['height']+';"></div>';
+      div.innerHTML += square
+    })
+
+    document.getElementById('rightButton').addEventListener('click',function(){
+      currIDX = (currIDX + 1) % parsed.length;
+      let square = '<div style="background-color: '+parsed[currIDX]['background-color']+'; width:'+parsed[currIDX]['width']+'; height: '+parsed[currIDX]['height']+';"></div>';
+      div.innerHTML += square
+    })
+  }
+
+  generate()
+
+
+</script>
+
+</body>
+</html>

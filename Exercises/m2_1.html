@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>M2_1</title>
+  <style>
+    div {
+      width: 100px;
+      height: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+
+</head>
+<body>
+
+<label for="colors">Colors:</label> <input type="text" id="colors">
+
+<label for="delimiter">Delimiter</label> <input type="text" id="delimiter">
+
+<button onclick="draw()">Draw</button>
+
+<div id="output">
+
+</div>
+
+<script>
+
+  function draw() {
+    let color = document.getElementById("colors");
+    color = color.value;
+    let delimiter = document.getElementById("delimiter");
+    delimiter = delimiter.value;
+
+    let colors = color.split(delimiter);
+    let output = document.getElementById("output");
+    output.innerHTML = '';
+
+    colors.forEach((color) => {
+      let square = '<div style="background-color: '+color+'; width: 50px; height: 50px"></div>'
+      output.innerHTML += square;
+    })
+  }
+
+</script>
+
+</body>
+</html>

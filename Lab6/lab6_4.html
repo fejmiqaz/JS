@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    div:first-child {
+      display: grid;
+      align-content: center;
+      justify-content: left;
+    }
+    div:nth-child(2) {
+    }
+  </style>
+</head>
+<body>
+
+<div>
+  <label for="city">City: </label> <input type="text" id="city">
+  <button onclick="generateWeatherChart()">Generate weather chart</button>
+</div>
+
+<div id="weatherChart">
+</div>
+
+<script>
+
+  let traces = []
+
+  function generateWeatherChart() {
+    let city = document.getElementById("city").value;
+    let url = 'http://api.weatherapi.com/v1/current.json?key=ae2e065d9b264ab696e164021242912&q=' + city + '&aqi=yes'
+    fetch(url)
+            .then(response => response.json())
+            .then(function (data) {
+              let name = data.location.name;
+              console.log('City: ' + name);
+              let temp = data.current.temp_c
+              console.log('Temp: ' + temp);
+              let date = data.location.localtime;
+              console.log('Day: ' + date);
+
+              let trace = {
+                x: [date],
+                y: [temp],
+                name: name,
+                type: 'bar'
+              };
+
+              traces.push(trace);
+
+              let layout  = {
+                type: 'group',
+                title: 'Weather forecast',
+                xaxis: { title: "City name" },
+                yaxis: { title: "Temperature" },
+                mode: 'lines',
+              };
+
+              Plotly.newPlot('weatherChart', traces, layout);
+            })
+  }
+
+</script>
+
+</body>
+</html>
