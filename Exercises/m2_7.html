@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>M2_7</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <style>
+        div {
+            width: 800px;
+            height: 600px;
+        }
+    </style>
+</head>
+<body>
+
+<button onclick="goLeft()"><</button>
+<button onclick="goRight()">></button>
+<div id="result">
+
+</div>
+
+<script>
+
+    let json = '[{"background-color":"red", "width":"100px", "height":"100px"}, {"background-color":"green", "width":"50px", "height":"100px"}, {"background-color":"blue", "width":"100px", "height":"50px"}]';
+    let data = JSON.parse(json);
+
+    let result = document.getElementById('result');
+    result.innerHTML = '<div style="width:'+ data[0]['width']+';height:'+ data[0]['height']+';background-color:'+ data[0]['background-color']+'"></div>';
+
+    let idx = 0;
+
+    function goLeft() {
+        result.innerHTML = '';
+
+        let el = document.createElement('div');
+        el.style.width = data[idx]['width'];
+        el.style.height = data[idx]['height'];
+        el.style.backgroundColor = data[idx]['background-color'];
+        el.style.position = 'absolute';
+        el.style.left = '800px';
+
+        anime({
+            targets: el,
+            translateX: -800,
+            duration: 1000,
+            easing: 'linear',
+        })
+        idx = (idx - 1 + data.length) % data.length;
+        result.appendChild(el);
+    }
+
+    function goRight() {
+        result.innerHTML = '';
+        const el = document.createElement('div');
+        el.style.width = data[idx]['width'];
+        el.style.height = data[idx]['height'];
+        el.style.backgroundColor = data[idx]['background-color'];
+        el.style.position = 'absolute';
+        el.style.left = '0px';
+
+        anime({
+            targets: el,
+            translateX: 800,
+            duration: 1000,
+            easing: 'linear',
+        })
+        idx = (idx + 1) % data.length;
+        result.appendChild(el);
+    }
+
+</script>
+
+</body>
+</html>
