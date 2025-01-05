@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>M2_5</title>
+    <style>
+        div {
+            width: 800px;
+            height: 800px;
+            position: absolute;
+        }
+    </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+</head>
+<body>
+
+<div id="container">
+
+</div>
+
+<script>
+
+    let raw = '[{"color":"red", "size":"50"},{"color":"blue", "size":"40"},{"color":"orange", "size":"30"},{"color":"green", "size":"20"},{"color":"yellow", "size":"50"}]'
+
+    let data = JSON.parse(raw);
+
+    let container = document.getElementById('container');
+    container.innerHTML = '';
+
+
+    for (let i = 0; i < data.length; i++) {
+
+        let square = document.createElement('div');
+        square.style.position = 'absolute';
+        square.style.background = data[i]['color'];
+        square.style.width = data[i]['size'] + 'px';
+        square.style.height = data[i]['size'] + 'px';
+        square.style.top = Math.random() * 600 + 'px';
+        square.style.left = Math.random() * 600 + 'px';
+        container.appendChild(square);
+
+        let idx = i;
+        let top = parseInt(square.style.top);
+        let left = parseInt(square.style.left);
+
+        square.addEventListener('click', () => {
+            setTimeout(() => {
+                const positions = [
+                    { top: top + 35 + 'px', left: left + 35 + 'px' },   // Top-right
+                    { top: top + 35 + 'px', left: left - 35 + 'px' },   // Top-left
+                    { top: top - 35 + 'px', left: left + 35 + 'px' },   // Bottom-right
+                    { top: top - 35 + 'px', left: left - 35 + 'px' }    // Bottom-left
+                ];
+
+                let newSquares = [];
+
+                for (let pos of positions) {
+                    let square = document.createElement('div');
+                    square.style.position = 'absolute';
+                    square.style.background = data[idx]['color'];
+                    square.style.width = data[idx]['size'] + 'px';
+                    square.style.height = data[idx]['size'] + 'px';
+
+                    if(pos.top) square.style.top = pos.top;
+                    if(pos.left) square.style.left = pos.left;
+                    if(pos.bottom) square.style.bottom = pos.bottom;
+                    if(pos.right) square.style.right = pos.right;
+
+                    container.appendChild(square);
+                    newSquares.push(square);
+                }
+                newSquares.forEach(({element, finalTop, finalLeft}) => {
+                  anime({
+                      targets: element,
+                      top: finalTop,
+                      left: finalLeft,
+                      duration: 1000,
+                      easing: 'easeOutQuad',
+                  });
+                });
+                square.remove();
+            }, 500)
+        });
+    }
+
+</script>
+
+</body>
+</html>
