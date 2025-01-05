@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>M2_6</title>
+    <style>
+        div {
+            width: 1000px;
+            height: 800px;
+            position: absolute;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+</head>
+<body>
+
+<div id="snow">
+
+</div>
+
+<script>
+
+    let json = '{"images": [{"url":"s1.png"}, {"url":"s2.png"}, {"url":"s3.png"},{"url":"s4.png"},{"url":"s5.png"},{"url":"s6.png"}]}'
+
+    let data = JSON.parse(json);
+
+    let div = document.getElementById('snow');
+
+    setInterval(() => {
+        data.images.forEach(image => {
+            setTimeout(() => {
+                let link = document.createElement('a');
+                link.src = image.url;
+
+                let img = document.createElement('img');
+                img.src = image.url;
+
+                img.style.width = '100px';
+                img.style.height = '100px';
+                img.style.top = Math.random() * 1000 + 'px';
+
+                anime({
+                    targets: img,
+                    translateX: Math.floor(Math.random() * 1000),
+                    translateY: 800,
+                    easing: 'easeOutQuad',
+                    duration: 3000,
+                    complete: () => {
+                        img.remove();
+                    }
+                })
+
+                link.appendChild(img);
+                div.appendChild(link);
+
+            }, Math.random() * 3000)
+        })
+    },5000)
+
+
+</script>
+
+</body>
+</html>
