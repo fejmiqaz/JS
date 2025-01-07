@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>M2_8</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <style>
+        div {
+            width: 1000px;
+            height: 1000px;
+            position: relative;
+            text-align: center;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div id="container">
+
+</div>
+
+
+<script>
+
+    let url = 'https://webhook.site/2e34c44d-c2ec-4e27-ae4d-9cb8e42f961c';
+
+    let container = document.getElementById('container');
+
+    fetch(url)
+        .then(response => response.json())
+        .then(function (data) {
+            data.forEach((item, index) => {
+                setTimeout(() => {
+                    let div = document.createElement('div');
+                    div.style.width = item.width;
+                    div.style.height = item.height;
+                    div.style.backgroundColor = item.color;
+                    div.style.top = item.top + 'px';
+                    div.style.left = item.left + 'px';
+                    div.style.position = 'relative';
+                    div.innerText = item.id;
+
+                    container.appendChild(div);
+                }, index * 500)
+            })
+        })
+
+</script>
+
+</body>
+</html>
