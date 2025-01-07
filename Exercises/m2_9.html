@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>M2_9</title>
+    <style>
+        div {
+            justify-content: left;
+            align-items: center;
+            display: grid;
+            margin-top: 10px;
+        }
+
+        div div {
+            display: flex;
+        }
+
+        div div input {
+            margin-inline: 5px
+        }
+    </style>
+</head>
+<body>
+
+<div>
+    <div><label for="red">Red</label><input type="text" id="red">
+        <p>(0-255)</p><br></div>
+    <div><label for="green">Green</label><input type="text" id="green">
+        <p>(0-255)</p><br></div>
+    <div><label for="blue">Blue</label><input type="text" id="blue">
+        <p>(0-255)</p><br></div>
+    <div><input type="radio" id="start"><label for="start">Start</label></div>
+    <div><input type="radio" id="end"><label for="end">End</label></div>
+    <div><label for="input">Text</label><input type="text" id="input"></div>
+    <div>
+        <button onclick="add()">Add</button>
+        <button onclick="removeEl()">Delete</button>
+    </div>
+</div>
+
+<div id="result" style="display:grid; justify-content: left; align-items: center;">
+
+</div>
+
+<script>
+
+    function add() {
+        let red = document.getElementById("red");
+        red = parseInt(red.value);
+        let green = document.getElementById("green");
+        green = parseInt(green.value);
+        let blue = document.getElementById("blue");
+        blue = parseInt(blue.value);
+        let input = document.getElementById("input");
+        input = input.value;
+
+        if (red.length === 0 || green.length === 0 || blue.length === 0 || input.length === 0) {
+            alert("Input correctly!");
+        }
+        createElement(red,green,blue,input);
+    }
+
+    function createElement(red,green,blue,input) {
+
+        let start = document.getElementById("start");
+        let end = document.getElementById("end");
+
+        let container = document.getElementById("result");
+
+        let text = document.createElement("p");
+        text.style.color = 'rgb('+red+','+green+','+blue+')';
+        text.textContent = input;
+
+        if(start.checked){
+            container.insertBefore(text, container.firstChild);
+            start.checked = false;
+        } else if(end.checked){
+            container.appendChild(text);
+            end.checked = false;
+        }
+    }
+
+    function removeEl() {
+        let el = document.getElementById("input").value;
+        let cont = document.getElementById("result");
+
+        for(let i = 0; i < cont.children.length; i++) {
+            if(cont.children[i].innerText === el) {
+                cont.children[i].remove();
+            }
+        }
+
+    }
+
+</script>
+
+</body>
+</html>
