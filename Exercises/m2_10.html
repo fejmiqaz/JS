@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>M2_10</title>
+</head>
+<body>
+
+<div style="width:1000px; height:1000px; position:absolute;">
+  <label for="color">Color</label><input type="text" id="color">
+  <label for="width">Width</label><input type="text" id="width">
+  <label for="height">Height</label><input type="text" id="height">
+  <label for="bgColor">Background Color</label><input type="text" id="bgColor">
+  <label for="content">Content</label><input type="text" id="content">
+  <button onclick="generate()">Generate</button>
+</div>
+
+<div id="result">
+
+</div>
+
+<script>
+  function generate() {
+    let color = document.getElementById('color');
+    color = color.value;
+    let width = document.getElementById('width');
+    width = width.value;
+    let height = document.getElementById('height');
+    height = height.value;
+    let bgColor = document.getElementById('bgColor');
+    bgColor = bgColor.value;
+    let content = document.getElementById('content');
+    content = content.value;
+
+    let result = document.getElementById('result');
+
+    let text = document.createElement('div');
+    text.style.backgroundColor = bgColor;
+    text.style.color = color;
+    text.style.width = width + 'px';
+    text.style.height = height + 'px';
+    text.textContent = content;
+    text.style.textAlign = 'center';
+    text.style.align = 'center';
+    text.style.top = Math.random() + 'px';
+    text.style.left = Math.random()+ 'px';
+    text.style.position = 'absolute';
+    result.appendChild(text);
+  }
+
+</script>
+
+</body>
+</html>
