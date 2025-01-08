@@ -55,7 +55,11 @@
         input = input.value;
 
         if (red.length === 0 || green.length === 0 || blue.length === 0 || input.length === 0) {
-            alert("Input correctly!");
+            if((red > 255 || red < 0) ||
+                (green < 0 || green > 255) ||
+                (blue < 0 || blue > 255)){
+                alert("Please enter between 0 and 255");
+            }
         }
         createElement(red,green,blue,input);
     }
