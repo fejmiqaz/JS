@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>M2_13</title>
+    <style>
+        div {
+            display: grid;
+            justify-content: left;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+<div id="RL" style="display:flex">
+
+</div>
+
+<div id="workArea" style="display:flex">
+    <label for="inputUser"></label><input type="text" id="inputUser">
+    <button onclick="check()" id="button">Check</button>
+</div>
+
+<div id="result">
+    <p id="score"></p>
+</div>
+
+<script>
+    let randomLetters = ['a', 'b', 'c', 'e', 'f', 'i', 'l', 'm', 'n', 'o', 'r', 's', 't', 'u', 'v', 'y'];
+    let dict = ['me', 'you', 'love', 'music', 'rock', 'mountain', 'black', 'football']
+    let scored = 1;
+
+
+    function check() {
+        let input = document.getElementById('inputUser').value;
+        let score = document.getElementById('score');
+
+        for (let i = 0; i < dict.length; i++) {
+            if (input === dict[i]) {
+                scored *= 2;
+            }
+        }
+        score.innerText = 'Your score is: ' + scored;
+    }
+
+    window.onload = function () {
+        let r = document.getElementById('RL');
+        for (let i = 0; i < randomLetters.length; i++) {
+            let letter = randomLetters[Math.floor(Math.random() * randomLetters.length)];
+            r.innerHTML += letter.toUpperCase() + ' ';
+        }
+        let idx = 60;
+        let result = document.getElementById('result');
+        let count = document.createElement('p');
+        let countDown = setInterval(function () {
+            idx--;
+            if (idx === 0) {
+                clearInterval(countDown);
+                let button = document.getElementById('button');
+                button.disabled = true;
+            }
+            count.innerText = "Remaining time: " + idx;
+        },1000)
+        result.appendChild(count);
+    };
+
+</script>
+
+</body>
+</html>

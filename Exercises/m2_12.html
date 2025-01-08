@@ -29,7 +29,7 @@
 
 <div id="workArea">
     <label for="check"></label><input type="text" id="check">
-    <button onclick="check()">Check</button>
+    <button onclick="check()" id="button">Check</button>
 </div>
 
 <div id="result" style="display: grid">
@@ -83,6 +83,8 @@
             if(idx === 0){
                 clearInterval(countdown);
                 resultDiv.innerText = 'Time is up'
+                let button = document.getElementById("button");
+                button.disabled = true;
             }
 
             if(parseInt(res) === parseInt(checkNumber)) {
