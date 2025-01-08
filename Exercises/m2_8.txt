@@ -1,0 +1,5 @@
+Create a web page where upon loading the page, div elements are displayed, loaded from a JSON, with properties from the JSON, at random positions on the screen. 
+The screen should be 800x800. 
+When an element is clicked, it grows, and then four small cubes appear from it, moving in fixed directions — meaning, the two on the left should move apart, and the other two on the right should move apart with animation. 
+Then, if any of those new cubes are clicked, the same animation should repeat for the new square — it should grow and then split into 4 new ones.
+[{"color":"red", "size":"50"},{"color":"blue", "size":"40"},{"color":"orange", "size":"30"},{"color":"green", "size":"20"},{"color":"yellow", "size":"50"}]

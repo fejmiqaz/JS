@@ -28,7 +28,7 @@
 
 <script>
     let randomLetters = ['a', 'b', 'c', 'e', 'f', 'i', 'l', 'm', 'n', 'o', 'r', 's', 't', 'u', 'v', 'y'];
-    let dict = ['me', 'you', 'love', 'music', 'rock', 'mountain', 'black', 'football']
+    let dict = ['tea','me', 'you', 'love', 'music', 'rock', 'mountain', 'black', 'football']
     let scored = 1;
 
 
@@ -39,6 +39,8 @@
         for (let i = 0; i < dict.length; i++) {
             if (input === dict[i]) {
                 scored *= 2;
+            }else{
+                scored *= 1;
             }
         }
         score.innerText = 'Your score is: ' + scored;
