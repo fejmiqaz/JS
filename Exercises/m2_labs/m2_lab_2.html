@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Watch List</title>
+    <style>
+        #inputForm {
+            display: grid;
+            justify-content: left;
+            align-items: center;
+        }
+
+        #inputForm div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        #inputForm div input {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Watch List</h1>
+<h2>Add a movie</h2>
+
+<div id="inputForm">
+    <div><label for="title">Title: </label><input type="text" id="title" name="Enter movie title"></div>
+    <div><label for="genre">Genre: </label><input type="text" id="genre" name="Enter movie genre"></div>
+    <div><label>Status: <input type="radio" id="watched" name="status" value="watched">Watched <input type="radio"
+                                                                                                      id="unwatched"
+                                                                                                      name="status"
+                                                                                                      value="towatch">To watch</label>
+    </div>
+    <div><label for="rating">Rating:</label><input type="text" id="rating" name="Rate out of 10"></div>
+    <button onclick="addMovie()">Add movie</button>
+</div>
+
+<div>
+    <h1>Your Movies:</h1>
+    <p>Filter by status: </p>
+    <select id="selectOptions" name="selectOptions">
+        <option value="viewAll">View all</option>
+        <option value="watched">Watched</option>
+        <option value="towatch">To Watch</option>
+    </select>
+    <button onclick="filterMovies()">Filter</button>
+    <label for="searchGenre">Search by genre: </label><input type="text" id="searchGenre">
+    <button onclick="searchByGenre()">Search</button>
+    <div id="output" style="display:flex; flex-wrap: wrap">
+
+    </div>
+</div>
+
+<script>
+
+    let obj = [];
+
+    function addMovie() {
+        let title = document.getElementById("title");
+        title = title.value;
+        let genre = document.getElementById("genre");
+        genre = genre.value;
+        let watched = document.getElementById("watched");
+        let checked = watched.checked;
+
+        let rating = document.getElementById("rating");
+        rating = rating.value;
+
+        let newMovie = {
+            title: title,
+            genre: genre,
+            rating: rating,
+            status: checked ? "watched" : "towatch"
+        }
+
+        let output = document.getElementById("output");
+
+        let movie = '<div style="display:grid; justify-content: center; align-items: center; border: 1px solid black; width: 200px; height: 200px; text-align: center">' +
+            '<p>' + newMovie.title + '</p>' +
+            '<p>' + newMovie.genre + '</p>' +
+            '<p>Your rating: ' + newMovie.rating + '/10</p></div>';
+        output.innerHTML += movie;
+
+        obj.push(newMovie);
+    }
+
+    function searchByGenre() {
+        let genre = document.getElementById("genre");
+        genre = genre.value;
+        let output = document.getElementById("output");
+        output.innerHTML = '';
+        let filteredByGenreMovie = obj.filter(movie => movie.genre === genre);
+        filteredByGenreMovie.forEach(movie => {
+            let film = '<div style="display:grid; justify-content: center; align-items: center; border: 1px solid black; width: 200px; height: 200px; text-align: center">' +
+                '<p>' + movie.title + '</p>' +
+                '<p>' + movie.genre + '</p>' +
+                '<p>Your rating: ' + movie.rating + '/10</p></div>';
+            output.innerHTML += film;
+        })
+    }
+
+    function filterMovies() {
+        let selectOptions = document.getElementById("selectOptions");
+        let output = document.getElementById("output");
+        output.innerHTML = '';
+        if (selectOptions.value === "watched") {
+            let watchedMovies = obj.filter(movie => movie.status === selectOptions.value);
+            watchedMovies.forEach(movie => {
+                let film = '<div style="display:grid; justify-content: center; align-items: center; border: 1px solid black; width: 200px; height: 200px; text-align: center">' +
+                    '<p>' + movie.title + '</p>' +
+                    '<p>' + movie.genre + '</p>' +
+                    '<button onclick="removeMovie(this)">Remove</button></div>';
+                output.innerHTML += film;
+            })
+        } else if (selectOptions.value === "towatch") {
+            let toWatchMovies = obj.filter(movie => movie.status === selectOptions.value);
+            toWatchMovies.forEach(movie => {
+                let film = '<div style="display:grid; justify-content: center; align-items: center; border: 1px solid black; width: 200px; height: 200px; text-align: center">' +
+                    '<p>' + movie.title + '</p>' +
+                    '<p>' + movie.genre + '</p>' +
+                    '<p>Your rating: ' + movie.rating + '/10</p></div>';
+                output.innerHTML += film;
+            })
+        } else if (selectOptions.value === "viewAll") {
+            for(let i = 0; i < obj.length; i++) {
+                let movie = '<div style="display:grid; justify-content: center; align-items: center; border: 1px solid black; width: 200px; height: 200px; text-align: center">' +
+                    '<p>' + obj[i].title + '</p>' +
+                    '<p>' + obj[i].genre + '</p>' +
+                    '<p>Your rating: ' + obj[i].rating + '/10</p></div>';
+                output.innerHTML += movie;
+            }
+        }
+    }
+    function removeMovie(obj){
+        let toRemove = obj.parentNode;
+        toRemove.parentNode.removeChild(toRemove);
+    }
+
+</script>
+
+</body>
+</html>
