@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pie Chart Lab</title>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body>
+
+<div id="container">
+  <div id="inputs">
+    <label for="category">Category</label><input type="text" id="category">
+    <label for="amount">Amount</label><input type="text" id="amount">
+    <button onclick="addExpense()">Add Expense</button><button onclick="showPieChart()">Show Pie Chart</button>
+  </div>
+  <div id="outputs">
+
+  </div>
+  <div id="chart">
+
+  </div>
+</div>
+
+<script>
+
+  let budgetData = [];
+
+  function addExpense() {
+    let category = document.getElementById("category").value;
+    let amount = document.getElementById("amount").value;
+
+    let data = {
+      category: category,
+      amount: amount,
+    }
+    budgetData.push(data);
+
+    let outputs = document.getElementById("outputs");
+    let list = document.createElement("ul")
+    let element = document.createElement("li");
+    element.textContent = ''+data.category+' - '+data.amount+'$';
+    list.appendChild(element);
+    outputs.appendChild(list);
+  }
+
+  function showPieChart() {
+
+    let amounts = budgetData.map(amount => amount.amount);
+    let categories = budgetData.map(category => category.category);
+
+    let data = {
+      values: amounts,
+      labels: categories,
+      type: 'pie'
+    };
+
+    let layout = {
+      title: 'Expense Distribution',
+      height: 400,
+      width: 500
+    };
+
+    Plotly.newPlot('chart', [data], layout);
+  }
+
+</script>
+
+</body>
+</html>
