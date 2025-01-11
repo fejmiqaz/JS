@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CRUD APP</title>
+
+    <style>
+        #container {
+            display: grid;
+            justify-content: center;
+            align-items: center;
+        }
+        #container #applicationForm {
+            display: grid;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border: 1px solid black;
+            margin-top: 10px;
+            border-radius: 10px;
+            background-color: lightgrey;
+        }
+        #container #applicationForm * {
+            margin-bottom: 5px;
+        }
+        #container #filters {
+            display: grid;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border: 1px solid black;
+            margin-top: 10px;
+            border-radius: 10px;
+        }
+        #container #filters * {
+            margin-inline: 5px;
+            margin-bottom: 5px;
+        }
+        #container #output {
+            display: grid;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid black;
+            margin-top: 10px;
+            border-radius: 10px;
+        }
+        #container #output #table th,td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            width: 132px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div id="container">
+    <div id="applicationForm">
+        <label for="authorName">Author name</label><input type="text" id="authorName">
+        <label for="bookTitle">Book title </label><input type="text" id="bookTitle">
+        <label for="bookCategory">Book category</label><select name="categories" id="bookCategory">
+        <option value="fiction">Fiction</option>
+        <option value="nonfiction">Non-Fiction</option>
+        <option value="mystery">Mystery</option>
+        <option value="fantasy">Fantasy</option>
+        <option value="science_fiction">Science Fiction</option>
+        <option value="biography">Biography</option></select>
+        <button onclick="submit()">Submit</button>
+    </div>
+    <div id="filters">
+        <h2>Filter table</h2>
+        <div>
+            <label for="authorFilter" onenter="">Filter by author</label><input type="text" id="authorFilter">
+            <label for="bookTitleFilter">Filter by book title</label><select name="bookTitleFilter" id="bookTitleFilter">
+            <option value="fiction">Fiction</option>
+            <option value="nonfiction">Non-Fiction</option>
+            <option value="mystery">Mystery</option>
+            <option value="fantasy">Fantasy</option>
+            <option value="science_fiction">Science Fiction</option>
+            <option value="biography">Biography</option>\
+            </select>
+        </div>
+
+    </div>
+    <div id="output">
+        <table id="table">
+            <tr><th>Author</th><th>Book title</th><th>Category</th><th>Action</th></tr>
+        </table>
+    </div>
+</div>
+
+<script>
+
+    let books = [];
+
+    function submit(){
+        let authorName = document.getElementById('authorName').value;
+        let bookTitle = document.getElementById('bookTitle').value;
+        let bookCategory = document.getElementById('bookCategory').value;
+
+        let newBook = {
+            authorName: authorName,
+            bookTitle: bookTitle,
+            bookCategory: bookCategory,
+        }
+
+        books.push(newBook);
+        displayTable();
+    }
+    function displayTable(){
+        let table = document.getElementById('table');
+        table.innerHTML = '';
+        for(let book of books){
+            let row = document.createElement('tr');
+            let tdAuth = document.createElement('td');
+            tdAuth.textContent = book.authorName;
+            row.appendChild(tdAuth);
+            let tdBookTitle = document.createElement('td');
+            tdBookTitle.textContent = book.bookTitle;
+            row.appendChild(tdBookTitle);
+            let tdBookCategory = document.createElement('td');
+            tdBookCategory.textContent = book.bookCategory;
+            row.appendChild(tdBookCategory);
+            let tdActions = document.createElement('td');
+            tdActions.innerHTML = '<button onclick="editInformation()">Edit</button><button onclick="removeInformation()">Remove</button>';
+            row.appendChild(tdActions);
+
+            table.appendChild(row);
+
+            // row = '<td>'+authorName+'</td><td>'+bookTitle+'</td><td>'+bookCategory+'</td><td><button onclick="editInformation()">Edit</button><button onclick="removeInformation()">Remove</button></td>';
+            // table.innerHTML += row;
+        }
+    }
+    function filterByAuthor(){
+        let authorFilter = document.getElementById('authorFilter');
+        authorFilter.addEventListener('input', function(){
+            let table = document.getElementById('table');
+            table.innerHTML = '';
+            for(let book of books){
+                if(book.authorName === authorFilter.value){
+                    let row = document.createElement('tr');
+                    let tdAuth = document.createElement('td');
+                    tdAuth.textContent = book.authorName;
+                    row.appendChild(tdAuth);
+                    let tdBookTitle = document.createElement('td');
+                    tdBookTitle.textContent = book.bookTitle;
+                    row.appendChild(tdBookTitle);
+                    let tdBookCategory = document.createElement('td');
+                    tdBookCategory.textContent = book.bookCategory;
+                    row.appendChild(tdBookCategory);
+                    let tdActions = document.createElement('td');
+                    tdActions.innerHTML = '<button onclick="editInformation()">Edit</button><button onclick="removeInformation()">Remove</button>';
+                    row.appendChild(tdActions);
+
+                    table.appendChild(row);
+                }else{
+                    displayTable()
+                }
+            }
+        })
+    }
+    filterByAuthor();
+
+</script>
+
+</body>
+</html>

@@ -66,7 +66,6 @@
         genre = genre.value;
         let watched = document.getElementById("watched");
         let checked = watched.checked;
-
         let rating = document.getElementById("rating");
         rating = rating.value;
 
@@ -113,7 +112,7 @@
                 let film = '<div style="display:grid; justify-content: center; align-items: center; border: 1px solid black; width: 200px; height: 200px; text-align: center">' +
                     '<p>' + movie.title + '</p>' +
                     '<p>' + movie.genre + '</p>' +
-                    '<button onclick="removeMovie(this)">Remove</button></div>';
+                    '</div>';
                 output.innerHTML += film;
             })
         } else if (selectOptions.value === "towatch") {
@@ -122,7 +121,7 @@
                 let film = '<div style="display:grid; justify-content: center; align-items: center; border: 1px solid black; width: 200px; height: 200px; text-align: center">' +
                     '<p>' + movie.title + '</p>' +
                     '<p>' + movie.genre + '</p>' +
-                    '<p>Your rating: ' + movie.rating + '/10</p></div>';
+                    '<button onclick="removeMovie(this)">Remove</button></div>';
                 output.innerHTML += film;
             })
         } else if (selectOptions.value === "viewAll") {
