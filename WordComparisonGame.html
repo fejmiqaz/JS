@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Comparison Game</title>
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --accent-green: #4cc9f0;
+            --accent-yellow: #ffd166;
+            --accent-red: #ef476f;
+            --dark-color: #2b2d42;
+            --light-color: #f8f9fa;
+            --border-radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .game-container {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 700px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .input-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .button-group button {
+            flex: 1;
+        }
+
+        label {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        #randomText {
+            flex: 1;
+            border: 2px solid #e0e0e0;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            height: auto;
+            width: auto;
+            text-align: left;
+        }
+
+        #randomText:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #3048c2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        #inputs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        #inputs input {
+            width: 70px;
+            height: 70px;
+            font-size: 2rem;
+            text-align: center;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        #inputs input[style*="green"] {
+            background-color: #4ade80 !important;
+            color: white;
+        }
+
+        #inputs input[style*="yellow"] {
+            background-color: #fcd34d !important;
+            color: var(--dark-color);
+        }
+
+        #inputs input[style*="red"] {
+            background-color: #fb7185 !important;
+            color: white;
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+            font-size: 2rem;
+        }
+
+        .instructions {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #6b7280;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 600px) {
+            .input-group {
+                flex-direction: column;
+            }
+
+            #inputs input {
+                width: 60px;
+                height: 60px;
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="game-container">
+    <div>
+        <h1 class="title">Word Comparison Game</h1>
+        <p class="instructions">Guess the secret word! You have <span style="color: #ef476f; font-weight: bold;">5 attempts</span> to guess correctly. You'll get color hints comparing your guess to the target word.</p>
+    </div>
+
+    <div class="input-section">
+        <label for="randomText">Enter your guess</label>
+        <div class="input-group">
+            <input type="text" id="randomText" placeholder="Type your guess...">
+            <button id="tryButton" onclick="randomize()">TRY</button>
+        </div>
+        <div class="button-group">
+            <button id="hintButton" onclick="showHint()" style="background-color: #4cc9f0; display: none;">SHOW HINT</button>
+            <button onclick="newGame()" style="background-color: #3a0ca3;">NEW WORD</button>
+        </div>
+    </div>
+
+    <div id="hintContainer" style="display: none; background-color: #ffe8d6; padding: 15px; border-radius: 8px; margin-top: 15px; position: relative;">
+        <span id="hintText" style="font-style: italic; color: #6b5b95;"></span>
+        <button onclick="hideHint()" style="position: absolute; top: 5px; right: 5px; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #6b5b95;">×</button>
+    </div>
+
+    <div id="inputs"></div>
+</div>
+
+<script>
+    // Expanded word list with hints
+    const wordsWithHints = [
+        { word: "win", hint: "To achieve victory or success" },
+        { word: "crazy", hint: "Extremely enthusiastic or wild" },
+        { word: "best", hint: "Of the highest quality or excellence" },
+        { word: "modern", hint: "Relating to present or recent times" },
+        { word: "classic", hint: "Judged over time to be of the highest quality" },
+        { word: "quick", hint: "Moving fast or doing something in a short time" },
+        { word: "jumps", hint: "Leaps or springs suddenly" },
+        { word: "fuzzy", hint: "Covered with fine, light hairs" },
+        { word: "pixel", hint: "A small element of a digital image" },
+        { word: "jazzy", hint: "Bright, colorful, and showy" },
+        { word: "pluck", hint: "To pull or pick with sudden force" },
+        { word: "glyph", hint: "A symbol that represents a sound or character" },
+        { word: "quirk", hint: "A peculiar trait or characteristic" },
+        { word: "major", hint: "Greater in size, extent, or importance" },
+        { word: "bytes", hint: "Units of digital information" },
+        { word: "dance", hint: "Move rhythmically to music" },
+        { word: "ocean", hint: "A vast body of saltwater" },
+        { word: "sunny", hint: "Bright with sunlight" },
+        { word: "pilot", hint: "A person who operates an aircraft" },
+        { word: "music", hint: "Vocal or instrumental sounds combined" }
+    ];
+
+    let currentHint = "";
+    let currentWord = "";
+    let attemptCount = 0;
+    const MAX_ATTEMPTS = 5;
+
+    function showHint() {
+        if (!currentHint) {
+            alert("Start a new game first!");
+            return;
+        }
+
+        document.getElementById('hintText').textContent = currentHint;
+        document.getElementById('hintContainer').style.display = 'block';
+    }
+
+    function hideHint() {
+        document.getElementById('hintContainer').style.display = 'none';
+    }
+
+    function updateAttemptCounter() {
+        const attemptsLeft = MAX_ATTEMPTS - attemptCount;
+        const counterElement = document.getElementById('attemptCounter');
+        counterElement.textContent = attemptsLeft;
+
+        // Change color based on attempts left
+        if (attemptsLeft <= 1) {
+            counterElement.style.color = '#ef476f'; // Red for last attempt
+        } else if (attemptsLeft <= 2) {
+            counterElement.style.color = '#ffd166'; // Yellow for warning
+        } else {
+            counterElement.style.color = '#4cc9f0'; // Blue for normal
+        }
+    }
+
+    function newGame() {
+        // Reset attempt counter
+        attemptCount = 0;
+
+        // Clear previous results
+        let inputs = document.getElementById('inputs');
+        inputs.innerHTML = "";
+        document.getElementById('randomText').value = "";
+
+        // Select a random word
+        const randomIndex = Math.floor(Math.random() * wordsWithHints.length);
+        currentWord = wordsWithHints[randomIndex].word;
+        currentHint = wordsWithHints[randomIndex].hint;
+
+        // Display length info
+        const lengthInfo = document.createElement('div');
+        lengthInfo.style.width = '100%';
+        lengthInfo.style.textAlign = 'center';
+        lengthInfo.style.marginBottom = '15px';
+        lengthInfo.style.fontSize = '1.1rem';
+        lengthInfo.innerHTML = `I'm thinking of a <strong>${currentWord.length}-letter</strong> word. Try to guess it!`;
+        inputs.appendChild(lengthInfo);
+
+        // Create attempt counter display
+        const attemptDisplay = document.createElement('div');
+        attemptDisplay.style.width = '100%';
+        attemptDisplay.style.textAlign = 'center';
+        attemptDisplay.style.marginBottom = '15px';
+        attemptDisplay.style.fontSize = '1.1rem';
+        attemptDisplay.innerHTML = `Attempts left: <span id="attemptCounter" style="font-weight: bold; color: #4cc9f0;">${MAX_ATTEMPTS}</span>`;
+        inputs.appendChild(attemptDisplay);
+
+        // Create empty boxes to show word length
+        for(let i = 0; i < currentWord.length; i++) {
+            let box = document.createElement('input');
+            box.disabled = true;
+            box.style.backgroundColor = '#e0e0e0';
+            box.value = '?';
+            inputs.appendChild(box);
+        }
+
+        // Show hint button
+        document.getElementById('hintButton').style.display = 'inline-block';
+        hideHint();
+
+        // Enable input
+        document.getElementById('randomText').disabled = false;
+        document.getElementById('tryButton').disabled = false;
+    }
+
+    function endGame(won) {
+        const inputs = document.getElementById('inputs');
+
+        // Create message based on result
+        const resultMessage = document.createElement('div');
+        resultMessage.style.padding = '15px';
+        resultMessage.style.margin = '20px 0';
+        resultMessage.style.borderRadius = '8px';
+        resultMessage.style.fontWeight = 'bold';
+        resultMessage.style.textAlign = 'center';
+        resultMessage.style.fontSize = '1.2rem';
+
+        if (won) {
+            resultMessage.style.backgroundColor = '#4ade80';
+            resultMessage.style.color = 'white';
+            resultMessage.innerHTML = '🎉 You got it right! Congratulations! 🎉';
+        } else {
+            resultMessage.style.backgroundColor = '#ef476f';
+            resultMessage.style.color = 'white';
+            resultMessage.innerHTML = `😢 Game Over! The word was: <strong>${currentWord}</strong>`;
+        }
+
+        inputs.appendChild(resultMessage);
+
+        // Add a play again button
+        const playAgainBtn = document.createElement('button');
+        playAgainBtn.textContent = 'Play Again';
+        playAgainBtn.style.display = 'block';
+        playAgainBtn.style.margin = '20px auto';
+        playAgainBtn.style.padding = '12px 25px';
+        playAgainBtn.style.backgroundColor = '#3a0ca3';
+        playAgainBtn.style.color = 'white';
+        playAgainBtn.style.border = 'none';
+        playAgainBtn.style.borderRadius = '8px';
+        playAgainBtn.style.cursor = 'pointer';
+        playAgainBtn.style.fontSize = '1.1rem';
+        playAgainBtn.onclick = newGame;
+
+        inputs.appendChild(playAgainBtn);
+
+        // Disable input
+        document.getElementById('randomText').disabled = true;
+        document.getElementById('tryButton').disabled = true;
+    }
+
+    function randomize(){
+        let inputs = document.getElementById('inputs');
+        let randomText = document.getElementById('randomText');
+        randomText = randomText.value.toLowerCase(); // Convert to lowercase for better matching
+
+        // Handle empty input or no current word
+        if (!randomText) {
+            alert("Please enter a text first!");
+            return;
+        }
+
+        if (!currentWord) {
+            alert("Please start a new game first!");
+            return;
+        }
+
+        // Increment attempt counter
+        attemptCount++;
+        updateAttemptCounter();
+
+        // Create a container for each attempt
+        const attemptContainer = document.createElement('div');
+        attemptContainer.style.backgroundColor = '#f8f9fa';
+        attemptContainer.style.borderRadius = '8px';
+        attemptContainer.style.padding = '15px';
+        attemptContainer.style.marginTop = '10px';
+
+        // Create a container for the attempt info
+        let attemptInfo = document.createElement('div');
+        attemptInfo.style.width = '100%';
+        attemptInfo.style.textAlign = 'center';
+        attemptInfo.style.marginBottom = '10px';
+        attemptInfo.style.fontSize = '1.1rem';
+        attemptInfo.innerHTML = `<strong>Attempt ${attemptCount}:</strong> "${randomText}"`;
+        attemptContainer.appendChild(attemptInfo);
+
+        // Display the comparison boxes
+        const comparisonContainer = document.createElement('div');
+        comparisonContainer.style.display = 'flex';
+        comparisonContainer.style.flexWrap = 'wrap';
+        comparisonContainer.style.gap = '10px';
+        comparisonContainer.style.justifyContent = 'center';
+
+        let correctLetters = 0;
+
+        for(let i = 0; i < currentWord.length; i++) {
+            let box = document.createElement('input');
+
+            if(i < randomText.length) {
+                if(randomText[i].charCodeAt(0) === currentWord[i].charCodeAt(0)){
+                    box.style.backgroundColor = 'green';
+                    correctLetters++;
+                } else if (randomText[i].charCodeAt(0) >= currentWord[i].charCodeAt(0)){
+                    box.style.backgroundColor = 'yellow';
+                } else {
+                    box.style.backgroundColor = 'red';
+                }
+                box.value = randomText[i];
+            } else {
+                box.style.backgroundColor = '#e0e0e0';
+                box.value = '';
+            }
+
+            comparisonContainer.appendChild(box);
+        }
+
+        attemptContainer.appendChild(comparisonContainer);
+        inputs.appendChild(attemptContainer);
+
+        // Check if player won
+        if (randomText === currentWord) {
+            endGame(true);
+            return;
+        }
+
+        // Check if out of attempts
+        if (attemptCount >= MAX_ATTEMPTS) {
+            endGame(false);
+            return;
+        }
+
+        // Clear input field for next guess
+        document.getElementById('randomText').value = "";
+        document.getElementById('randomText').focus();
+    }
+
+    // Add keyboard event listener for better UX
+    document.getElementById('randomText').addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            randomize();
+        }
+    });
+
+    // Initialize with a new game on page load
+    window.onload = function() {
+        newGame();
+    };
+</script>
+</body>
+</html>
